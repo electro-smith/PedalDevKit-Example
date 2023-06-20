@@ -11,9 +11,9 @@
         "${workspaceRoot}"
       ],
       // Here's where you can put the path to the program you want to debug:
-      "executable": "${workspaceRoot}/Blink/build/Blink.elf",
+      "executable": "${workspaceRoot}/BasicExample/build/BasicExample.elf",
       "interface": "swd",
-      "name": "Debug Blink",
+      "name": "Debug BasicExample",
       "openOCDLaunchCommands": [
         "init",
         "reset init",

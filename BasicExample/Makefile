@@ -1,5 +1,5 @@
 # Project Name
-TARGET = Blink
+TARGET = BasicExample
 
 # Configure for debugging
 # common configurations:

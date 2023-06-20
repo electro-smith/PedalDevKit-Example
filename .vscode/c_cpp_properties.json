@@ -5,7 +5,7 @@
             // Edit to match your development environment if necessary
             "compilerPath": "C:/Program Files/DaisyToolchain/bin/arm-none-eabi-gcc.exe",
             "includePath": [
-                "${workspaceFolder}/Blink/**",
+                "${workspaceFolder}/BasicExample/**",
                 "${workspaceFolder}/libs/libDaisy/**",
                 "${workspaceFolder}/libs/DaisySP/**"
             ],
@@ -23,7 +23,7 @@
             // Edit to match your development environment if necessary
             "compilerPath": "/usr/bin/arm-none-eabi-gcc",
             "includePath": [
-                "${workspaceFolder}/Blink/**",
+                "${workspaceFolder}/BasicExample/**",
                 "${workspaceFolder}/libs/libDaisy/**",
                 "${workspaceFolder}/libs/DaisySP/**"
             ],
