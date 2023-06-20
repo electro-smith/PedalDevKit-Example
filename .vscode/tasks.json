@@ -1,0 +1,50 @@
+{
+  "tasks": [
+    {
+      "label": "Build Libraries",
+      "command": "./ci/build_libs.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Build",
+      "command": "make",
+      "options": {
+        "cwd": "${workspaceFolder}/Blink"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${workspaceFolder}/Blink"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Program DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/Blink"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Rebuild and Program DFU",
+      "command": "make clean; make; make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/Blink"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    }
+  ],
+  "version": "2.0.0"
+}

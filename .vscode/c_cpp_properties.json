@@ -1,0 +1,40 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            // Edit to match your development environment if necessary
+            "compilerPath": "C:/Program Files/DaisyToolchain/bin/arm-none-eabi-gcc.exe",
+            "includePath": [
+                "${workspaceFolder}/Blink/**",
+                "${workspaceFolder}/libs/libDaisy/**",
+                "${workspaceFolder}/libs/DaisySP/**"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "defines": [
+                "DEBUG=1",
+                "STM32H750xx"
+            ],
+            "windowsSdkVersion": "10.0.17763.0"
+        },
+        {
+            "name": "Mac",
+            // Edit to match your development environment if necessary
+            "compilerPath": "/usr/bin/arm-none-eabi-gcc",
+            "includePath": [
+                "${workspaceFolder}/Blink/**",
+                "${workspaceFolder}/libs/libDaisy/**",
+                "${workspaceFolder}/libs/DaisySP/**"
+            ],
+            "intelliSenseMode": "gcc-x64",
+            "cStandard": "c11",
+            "cppStandard": "c++17",
+            "defines": [
+                "DEBUG=1",
+                "STM32H750xx"
+            ]
+        }
+    ],
+    "version": 4
+}
