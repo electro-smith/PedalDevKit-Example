@@ -1,11 +1,12 @@
 /** Daisy Seed2 DFM Pedal Eval Basic Example
  *
- *  This example does a few things
+ *  This example does a few things that can serve as a great jumping off
+ *  point for new effects pedal projects.
  *
  *  1. Initializes Switch and GPIO for control of the true-bypass relays
- *  2. Initializes an LED to indicate bypass state
- *  3. Initializes POT 1 to be used to control the volume of the Audio
- *  4. Sets up basic audio with volume control via POT 1
+ *  2. Initializes an LED to indicate bypass state (illuminate RED when audio runs through software)
+ *  3. Initializes POT 1 and 2 to be used to control the volume of the audio channels
+ *  4. Sets up basic audio with volume control via POT 1 and 2
  */
 #include "daisy_seed.h"
 
