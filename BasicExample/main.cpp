@@ -1,4 +1,4 @@
-/** Daisy Seed2 DFM Pedal Eval Basic Example
+/** Daisy Seed2 DFM Pedal Dev Kit Basic Example
  *
  *  This example does a few things that can serve as a great jumping off
  *  point for new effects pedal projects.

@@ -1,13 +1,13 @@
-# S2DFM-PedalEval-Example
+# PedalDevKit Example
 
-Basic Seed2 DFM Pedal EVAL Project with all required libraries, etc.
+Basic Seed2 DFM Pedal Dev Kit project with all required libraries, etc.
 
 ## Get Started
 
 If cloning this repo from Github, you will want to do so with the submodules with:
 
 ```console
-git clone https://github.com/electro-smith/S2DFM-PedalEval-Example --recurse-submodules
+git clone https://github.com/electro-smith/PedalDevKit-Example --recurse-submodules
 ```
 
 if you've already cloned the repo without this you can fill the submodules by running the following:
@@ -24,7 +24,7 @@ Includes:
 
 * libDaisy - hardware library for Daisy
 * DaisySP - DSP library
-* BasicExample - Basic example demonstrating hardware setup code for the eval hardware.
+* BasicExample - Basic example demonstrating hardware setup code for the dev kit hardware.
 
 This also contains the following VS code tasks:
 
