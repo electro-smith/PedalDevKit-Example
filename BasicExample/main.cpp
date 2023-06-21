@@ -36,6 +36,10 @@ void AudioCallback(AudioHandle::InputBuffer in,
          */
         OUT_L[i] = IN_L[i] * volume_left;
         OUT_R[i] = IN_R[i] * volume_right;
+
+        /** Due to minor errata on the Rev4 hardware we need to phase invert the
+         *  left channel so both outputs have the same phase */
+        OUT_L[i] *= -1.f;
     }
 }
 
