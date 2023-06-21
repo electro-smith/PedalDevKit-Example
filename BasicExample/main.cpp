@@ -13,8 +13,7 @@ using namespace daisy;
 
 /** Global objects that need to be accessed in both main() and the audio callback */
 DaisySeed hardware;
-AnalogControl volume_pot;
-
+AnalogControl volume_left_pot, volume_right_pot;
 
 /** The audio callback that fires whenever new audio samples can be prepared */
 void AudioCallback(AudioHandle::InputBuffer in,
@@ -26,15 +25,16 @@ void AudioCallback(AudioHandle::InputBuffer in,
      *  To prevent quantization error, it would be prudent to add additional filtering
      *  at audio rate.
      */
-    float volume = volume_pot.Process();
+    float volume_left = volume_left_pot.Process();
+    float volume_right = volume_right_pot.Process();
     for (size_t i = 0; i < size; i++)
     {
         /** For each sample in the loop we'll multiply the input by our volume control
          *  OUT_x and IN_x are macros that access the out, and in buffers respectively.
          *  This would be equivalent to: out[0][i] = in[0][i] * volume;, etc.
          */
-        OUT_L[i] = IN_L[i] * volume;
-        OUT_R[i] = IN_R[i] * volume;
+        OUT_L[i] = IN_L[i] * volume_left;
+        OUT_R[i] = IN_R[i] * volume_right;
     }
 }
 
@@ -54,10 +54,12 @@ int main()
     relay_led.Init(seed::D11, true);
 
     /** ADC and Volume Control setup */
-    AdcChannelConfig pot1_cfg;
-    pot1_cfg.InitSingle(seed::A0); /**< alias for seed::D15 */
-    hardware.adc.Init(&pot1_cfg, 1);
-    volume_pot.Init(hardware.adc.GetPtr(0), hardware.AudioCallbackRate());
+    AdcChannelConfig adc_cfg[2];
+    adc_cfg[0].InitSingle(seed::A0); /**< alias for seed::D15 */
+    adc_cfg[1].InitSingle(seed::A1); /**< alias for seed::D16 */
+    hardware.adc.Init(adc_cfg, 2);
+    volume_left_pot.Init(hardware.adc.GetPtr(0), hardware.AudioCallbackRate());
+    volume_right_pot.Init(hardware.adc.GetPtr(1), hardware.AudioCallbackRate());
 
     /** Start the ADC and then the Audio */
     hardware.adc.Start();
