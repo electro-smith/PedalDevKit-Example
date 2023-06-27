@@ -32,6 +32,15 @@
       "problemMatcher": [],
       "type": "shell"
     },
+    {
+      "label": "Program-DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
     // BasicExample Tasks
     {
       "label": "BasicExample - Build",

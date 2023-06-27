@@ -30,6 +30,7 @@ Includes:
 * SimpleSwitchReading - Example demonstrating reading the position of a toggle.
 
 When you have the Makefile, or a source file within an examples folder open, you can run the "Build task" with "ctrl-shift-B" on windows, or "cmd-shift-B" on Mac OS, and that will compile the selected example.
+A similar, generic set of tasks for "Clean" and "Program DFU" are also available for the selected example.
 
 For each of these examples, there are the following VS code tasks:
 
