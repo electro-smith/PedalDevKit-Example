@@ -9,6 +9,29 @@
       "problemMatcher": [],
       "type": "shell"
     },
+    // Tasks for operations on the selected file's example.
+    {
+      "label": "Build",
+      "command": "make",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
     // BasicExample Tasks
     {
       "label": "BasicExample - Build",
@@ -157,6 +180,7 @@
       "problemMatcher": [],
       "type": "shell"
     },
+    // Combined Tasks for doing operations on all examples.
     {
       "label": "Build All",
       "dependsOn": ["BasicExample - Build", "PassthruAndBypass - Build",

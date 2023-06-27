@@ -29,6 +29,8 @@ Includes:
 * SimplePotReading - Exmaple demonstrating reading two pots, and printing their values to a serial monitor.
 * SimpleSwitchReading - Example demonstrating reading the position of a toggle.
 
+When you have the Makefile, or a source file within an examples folder open, you can run the "Build task" with "ctrl-shift-B" on windows, or "cmd-shift-B" on Mac OS, and that will compile the selected example.
+
 For each of these examples, there are the following VS code tasks:
 
 * Build: build the specified example
@@ -36,7 +38,7 @@ For each of these examples, there are the following VS code tasks:
 * Program DFU: programs the specified example's binary file via USB
 * Build and Program DFU: Rebuilds the specified program and downloads it via USB DFU
 
-In addition, there is a global VS Code task:
+In addition, there is a set of tasks that will operate on the entire workspace:
 
 * Build Libraries: builds libDaisy, and DaisySP from scratch. This is only necessary when manually updating, or cloning for the first time.
 * Build All: builds all of the individual example projects.
