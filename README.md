@@ -25,16 +25,24 @@ Includes:
 * libDaisy - hardware library for Daisy
 * DaisySP - DSP library
 * BasicExample - Basic example demonstrating hardware setup code for the dev kit hardware.
+* PassthruAndBypass - Example demonstrating toggling between audio passthru and true bypass
+* SimplePotReading - Exmaple demonstrating reading two pots, and printing their values to a serial monitor.
+* SimpleSwitchReading - Example demonstrating reading the position of a toggle.
 
-This also contains the following VS code tasks:
+For each of these examples, there are the following VS code tasks:
+
+* Build: build the specified example
+* Clean: removes the specified example's build folder, and it's contents.
+* Program DFU: programs the specified example's binary file via USB
+* Build and Program DFU: Rebuilds the specified program and downloads it via USB DFU
+
+In addition, there is a global VS Code task:
 
 * Build Libraries: builds libDaisy, and DaisySP from scratch. This is only necessary when manually updating, or cloning for the first time.
-* Build: build the blink example
-* Clean: removes compiled BasicExample code
-* Program DFU: programs the BasicExample.bin file via USB
-* Build and Program DFU: Rebuilds the program and downloads it via USB DFU
+* Build All: builds all of the individual example projects.
+* Clean All: removes all examples' build folders, and their contents.
 
-In addition, the following debug configurations are available:
+The following debug configurations are available:
 
 * Debug BasicExample: debugs the BasicExample application
 

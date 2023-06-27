@@ -6,6 +6,9 @@
             "compilerPath": "C:/Program Files/DaisyToolchain/bin/arm-none-eabi-gcc.exe",
             "includePath": [
                 "${workspaceFolder}/BasicExample/**",
+                "${workspaceFolder}/PassthruAndBypass/**",
+                "${workspaceFolder}/SimplePotReading/**",
+                "${workspaceFolder}/SimpleSwitchReading/**",
                 "${workspaceFolder}/libs/libDaisy/**",
                 "${workspaceFolder}/libs/DaisySP/**"
             ],
@@ -24,6 +27,9 @@
             "compilerPath": "/usr/bin/arm-none-eabi-gcc",
             "includePath": [
                 "${workspaceFolder}/BasicExample/**",
+                "${workspaceFolder}/PassthruAndBypass/**",
+                "${workspaceFolder}/SimplePotReading/**",
+                "${workspaceFolder}/SimpleSwitchReading/**",
                 "${workspaceFolder}/libs/libDaisy/**",
                 "${workspaceFolder}/libs/DaisySP/**"
             ],
