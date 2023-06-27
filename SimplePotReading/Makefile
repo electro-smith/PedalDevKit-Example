@@ -1,5 +1,5 @@
 # Project Name
-TARGET = BasicExample
+TARGET = SimplePotReading
 
 # Configure for debugging
 # common configurations:

@@ -1,5 +1,5 @@
 # Project Name
-TARGET = BasicExample
+TARGET = SimpleSwitchReading
 
 # Configure for debugging
 # common configurations:

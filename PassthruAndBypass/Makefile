@@ -1,5 +1,5 @@
 # Project Name
-TARGET = BasicExample
+TARGET = PassthruAndBypass
 
 # Configure for debugging
 # common configurations:
