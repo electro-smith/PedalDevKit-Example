@@ -9,11 +9,16 @@
       "problemMatcher": [],
       "type": "shell"
     },
+    // Tasks for operations on the selected file's example.
     {
       "label": "Build",
       "command": "make",
       "options": {
-        "cwd": "${workspaceFolder}/BasicExample"
+        "cwd": "${fileDirname}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
       },
       "problemMatcher": [],
       "type": "shell"
@@ -22,13 +27,41 @@
       "label": "Clean",
       "command": "make clean",
       "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "Program-DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    // BasicExample Tasks
+    {
+      "label": "BasicExample - Build",
+      "command": "make",
+      "options": {
         "cwd": "${workspaceFolder}/BasicExample"
       },
       "problemMatcher": [],
       "type": "shell"
     },
     {
-      "label": "Program DFU",
+      "label": "BasicExample - Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${workspaceFolder}/BasicExample"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "BasicExample - Program DFU",
       "command": "make program-dfu",
       "options": {
         "cwd": "${workspaceFolder}/BasicExample"
@@ -37,13 +70,135 @@
       "type": "shell"
     },
     {
-      "label": "Rebuild and Program DFU",
+      "label": "BasicExample - Rebuild and Program DFU",
       "command": "make clean; make; make program-dfu",
       "options": {
         "cwd": "${workspaceFolder}/BasicExample"
       },
       "problemMatcher": [],
       "type": "shell"
+    },
+    // SimplePotReading Tasks
+    {
+      "label": "SimplePotReading - Build",
+      "command": "make",
+      "options": {
+        "cwd": "${workspaceFolder}/SimplePotReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimplePotReading - Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${workspaceFolder}/SimplePotReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimplePotReading - Program DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/SimplePotReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimplePotReading - Rebuild and Program DFU",
+      "command": "make clean; make; make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/SimplePotReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    // SimpleSwitchReading Tasks
+    {
+      "label": "SimpleSwitchReading - Build",
+      "command": "make",
+      "options": {
+        "cwd": "${workspaceFolder}/SimpleSwitchReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimpleSwitchReading - Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${workspaceFolder}/SimpleSwitchReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimpleSwitchReading - Program DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/SimpleSwitchReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "SimpleSwitchReading - Rebuild and Program DFU",
+      "command": "make clean; make; make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/SimpleSwitchReading"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    // PassthruAndBypass Tasks
+    {
+      "label": "PassthruAndBypass - Build",
+      "command": "make",
+      "options": {
+        "cwd": "${workspaceFolder}/PassthruAndBypass"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "PassthruAndBypass - Clean",
+      "command": "make clean",
+      "options": {
+        "cwd": "${workspaceFolder}/PassthruAndBypass"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "PassthruAndBypass - Program DFU",
+      "command": "make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/PassthruAndBypass"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    {
+      "label": "PassthruAndBypass - Rebuild and Program DFU",
+      "command": "make clean; make; make program-dfu",
+      "options": {
+        "cwd": "${workspaceFolder}/PassthruAndBypass"
+      },
+      "problemMatcher": [],
+      "type": "shell"
+    },
+    // Combined Tasks for doing operations on all examples.
+    {
+      "label": "Build All",
+      "dependsOn": ["BasicExample - Build", "PassthruAndBypass - Build",
+                    "SimplePotReading - Build", "SimpleSwitchReading - Build"] 
+    },
+    {
+      "label": "Clean All",
+      "dependsOn": ["BasicExample - Clean", "PassthruAndBypass - Clean",
+                    "SimplePotReading - Clean", "SimpleSwitchReading - Clean"] 
     }
   ],
   "version": "2.0.0"
