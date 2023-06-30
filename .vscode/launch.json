@@ -11,7 +11,7 @@
         "${workspaceRoot}"
       ],
       // Here's where you can put the path to the program you want to debug:
-      "executable": "${workspaceRoot}/BasicExample/build/BasicExample.elf",
+      "executable": "${workspaceRoot}/FullHardwareTest/build/FullHardwareTest.elf",
       "interface": "swd",
       "name": "Debug BasicExample",
       "openOCDLaunchCommands": [

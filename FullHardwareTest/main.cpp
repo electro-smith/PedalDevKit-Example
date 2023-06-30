@@ -42,13 +42,13 @@ public:
         footswitch.Init(seed::D22, seed.AudioCallbackRate());
 
         /** Initialize the three way toggle */
-        toggle2.Init(seed::D24, seed::D25);
+        toggle2.Init(seed::D25, seed::D24);
 
         /** Initialize the RGB LED */
         led2.Init(seed::D11, seed::D12, seed::D31, true);
 
         /** Initialize the Single Color LED */
-        led1.Init(seed::D11, true);
+        led1.Init(seed::D9, true);
 
         /** Initialize the encoder */
         encoder.Init(seed::D27, seed::D28, seed::D18, seed.AudioCallbackRate());
@@ -67,25 +67,61 @@ public:
 
         /** Initialize the OLED */
         Display::Config display_cfg;
+        display_cfg.driver_config.transport_config.spi_config.periph = SpiHandle::Config::Peripheral::SPI_1;
+        display_cfg.driver_config.transport_config.spi_config.baud_prescaler = SpiHandle::Config::BaudPrescaler::PS_8;
+        /** Set up the SPI Pins for SPI1 */
+        display_cfg.driver_config.transport_config.spi_config.pin_config.sclk = seed::D8;
+        display_cfg.driver_config.transport_config.spi_config.pin_config.miso = Pin();
+        display_cfg.driver_config.transport_config.spi_config.pin_config.mosi = seed::D10;
+        display_cfg.driver_config.transport_config.spi_config.pin_config.nss = seed::D7;
+        /** Command and Reset Pins */
         display_cfg.driver_config.transport_config.pin_config.dc = seed::D0;
         display_cfg.driver_config.transport_config.pin_config.reset = seed::D32;
         display.Init(display_cfg);
         display.Fill(false);
+        display.SetCursor(4, 16);
+        display.WriteString("Insert USB-C", Font_7x10, true);
+        display.SetCursor(4, 36);
+        display.WriteString("And open serial", Font_6x8, true);
+        display.SetCursor(4, 44);
+        display.WriteString("monitor. . .", Font_6x8, true);
         display.Update();
 
         /** Start up background bits */
-        Log::StartLog();  /**< USB C Logging */
+        Log::StartLog(true);  /**< USB C Logging */
         seed.adc.Start(); /**< ADC */
+
+        toled = System::GetNow();
+        tled = System::GetNow();
     }
 
     /** Test sequence for animating LEDs */
     void AnimateLeds()
     {
-        auto now = System::GetNow();
-        if (now - tled > 2)
+        // auto now = System::GetNow();
+        // if (now - tled > 1)
         {
+            uint32_t now = System::GetNow();
             /** Update Animation */
-            toled = now;
+            // tled = now;
+            /** 0-1 */
+            float b1 = (now & 1023) / 1023.f;
+            led1.Set(b1);
+            led1.Update();
+            led1.Update();
+            led1.Update();
+            led1.Update();
+
+            /** 0-4 */
+            float b2 = (now & 4095) / 1023.f;
+            float r = b2 < 1.0f ? b2 : 0.f;
+            float g = b2 < 2.0f && b2 > 0.99f ? b2 - 1.f : 0.f;
+            float b = b2 < 3.0f && b2 > 1.99f ? b2 - 2.f : 0.f;
+            led2.Set(r, g, b);
+            led2.Update();
+            led2.Update();
+            led2.Update();
+            led2.Update();
         }
     }
 
@@ -97,6 +133,11 @@ public:
         {
             /** Update Animation */
             toled = now;
+            bool polarity = (now & 1023) > 511;
+            display.Fill(polarity);
+            display.SetCursor(4, 16);
+            display.WriteString("Pedal DevKit Test", Font_7x10, !polarity);
+            display.Update();
         }
     }
 
@@ -104,6 +145,15 @@ public:
     void StartAudio(AudioHandle::AudioCallback cb)
     {
         seed.StartAudio(cb);
+    }
+
+    /** Debounces controls, and updates values */
+    void ProcessAllControls()
+    {
+        toggle1.Debounce();
+        footswitch.Debounce();
+        pushbutton.Debounce();
+        encoder.Debounce();
     }
 
     using Display = OledDisplay<SSD130x4WireSpi128x64Driver>;
@@ -130,17 +180,28 @@ private:
 
 /** Global objects that need to be accessed in both main() and the audio callback */
 PedalDevKit hardware;
+int32_t enc_value_tracker;
 
 /** The audio callback that fires whenever new audio samples can be prepared */
 void AudioCallback(AudioHandle::InputBuffer in,
                    AudioHandle::OutputBuffer out,
                    size_t size)
 {
-
-    /** Process the AnalogControl to do some basic filtering from the ADC reads.
-     *  To prevent quantization error, it would be prudent to add additional filtering
-     *  at audio rate.
+    /** Debounce encoders */
+    hardware.ProcessAllControls();
+    /** LEDs are driven from software PWM.
+     *  So having them in the audio loop helps to keep their PWM consistent.
      */
+    hardware.AnimateLeds();
+
+    /** Update Encoder tracker value
+     *  +/- 1 from increment
+     *  reset to 0 with click
+     */
+    enc_value_tracker += hardware.encoder.Increment();
+    if (hardware.encoder.RisingEdge())
+        enc_value_tracker = 0;
+
     for (size_t i = 0; i < size; i++)
     {
         /** For each sample in the loop we'll multiply the input by our volume control
@@ -156,6 +217,49 @@ void AudioCallback(AudioHandle::InputBuffer in,
     }
 }
 
+/** Fills string with string representation of MidiEvent::Type
+ *  str needs to be at least 16 bytes long to store the data
+ */
+void GetMidiTypeAsString(MidiEvent &msg, char *str)
+{
+    switch (msg.type)
+    {
+    case NoteOff:
+        strcpy(str, "NoteOff");
+        break;
+    case NoteOn:
+        strcpy(str, "NoteOn");
+        break;
+    case PolyphonicKeyPressure:
+        strcpy(str, "PolyKeyPres.");
+        break;
+    case ControlChange:
+        strcpy(str, "CC");
+        break;
+    case ProgramChange:
+        strcpy(str, "Prog. Change");
+        break;
+    case ChannelPressure:
+        strcpy(str, "Chn. Pressure");
+        break;
+    case PitchBend:
+        strcpy(str, "PitchBend");
+        break;
+    case SystemCommon:
+        strcpy(str, "Sys. Common");
+        break;
+    case SystemRealTime:
+        strcpy(str, "Sys. Realtime");
+        break;
+    case ChannelMode:
+        strcpy(str, "Chn. Mode");
+        break;
+    default:
+        strcpy(str, "Unknown");
+        break;
+    }
+}
+
 int main()
 {
 
@@ -165,7 +269,89 @@ int main()
     /** Start the the Audio */
     hardware.StartAudio(AudioCallback);
 
+    uint32_t now, tprint;
+    now = tprint = System::GetNow();
+
+    MidiEvent last_midi_event;
+    hardware.midi.StartReceive();
+
     while (true)
     {
+        now = System::GetNow();
+        hardware.AnimateOLED();
+
+        if (hardware.midi.HasEvents())
+        {
+            while (hardware.midi.HasEvents())
+            {
+                auto msg = hardware.midi.PopEvent();
+                /** Print all messages when there are events */
+                // Log::PrintLine("--- MIDI ---");
+                // char outstr[128];
+                // char type_str[16];
+                // GetMidiTypeAsString(msg, type_str);
+                // sprintf(outstr,
+                //         "time:\t%ld\ttype: %s\tChannel:  %d\tData MSB: "
+                //         "%d\tData LSB: %d\n",
+                //         now,
+                //         type_str,
+                //         msg.channel,
+                //         msg.data[0],
+                //         msg.data[1]);
+                // Log::PrintLine(outstr);
+                last_midi_event = msg;
+
+                /** If the MIDI note is a note message we'll send that out to the MIDI output */
+                if (msg.type == NoteOn || msg.type == NoteOff)
+                {
+                    uint8_t outmsg[3];
+                    outmsg[0] = 0x90;
+                    outmsg[1] = msg.data[0];
+                    outmsg[2] = msg.data[1];
+                    hardware.midi.SendMessage(outmsg, 3);
+                }
+            }
+        }
+
+        /** Print Data */
+        if (now - tprint > 200)
+        {
+            /** Reset time so next print happens 100ms from now */
+            tprint = now;
+
+            /** Print all the stuff */
+            Log::PrintLine("--- Controls ---");
+            /** Pot values */
+            Log::PrintLine("Pot1:\t%5d\tPot2:\t%5d\tPot3:\t%5d\tExpression:\t%5d",
+                           hardware.seed.adc.Get(0),
+                           hardware.seed.adc.Get(1),
+                           hardware.seed.adc.Get(2),
+                           hardware.seed.adc.Get(3));
+            /** Buttons and Toggles */
+            auto tog_state = hardware.toggle2.Read();
+            Log::PrintLine("3-way Toggle:\t%s",
+                           tog_state == Switch3::POS_LEFT ? "Left" : tog_state == Switch3::POS_CENTER ? "Center"
+                                                                                                      : "Right");
+            Log::PrintLine("2-way Toggle:\t%s", hardware.toggle1.Pressed() ? "Right" : "Left");
+            Log::PrintLine("Footswitch:\t%s\tMomentary:\t%s",
+                           hardware.footswitch.Pressed() ? "On" : "Off",
+                           hardware.pushbutton.Pressed() ? "On" : "Off");
+            /** Encoders */
+            Log::PrintLine("Encoder:\t%d", enc_value_tracker);
+            /** Persistent data for last midi message received gets printed */
+            Log::PrintLine("--- MIDI ---");
+            char outstr[128];
+            char type_str[16];
+            GetMidiTypeAsString(last_midi_event, type_str);
+            sprintf(outstr,
+                    "time:\t%ld\ttype: %s\tChannel:  %d\tData MSB: "
+                    "%d\tData LSB: %d\n",
+                    now,
+                    type_str,
+                    last_midi_event.channel,
+                    last_midi_event.data[0],
+                    last_midi_event.data[1]);
+            Log::PrintLine(outstr);
+        }
     }
 }
