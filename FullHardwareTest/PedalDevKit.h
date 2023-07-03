@@ -84,7 +84,7 @@ public:
 
         /** Start up background bits */
         Log::StartLog(true); /**< USB C Logging */
-        seed.adc.Start();     /**< ADC */
+        seed.adc.Start();    /**< ADC */
 
         /** Set Relays to DSP path */
         relay_left.Write(true);
@@ -97,34 +97,36 @@ public:
     /** Test sequence for animating LEDs */
     void AnimateLeds()
     {
-        // auto now = System::GetNow();
-        // if (now - tled > 1)
-        {
-            uint32_t now = daisy::System::GetNow();
-            /** Update Animation */
-            // tled = now;
-            /** 0-1 */
-            float b1 = (now & 1023) / 1023.f;
-            led1.Set(b1);
-            led1.Update();
-            led1.Update();
-            led1.Update();
-            led1.Update();
 
-            /** 0-4 */
-            float b2 = (now & 4095) / 1023.f;
-            float r = b2 < 1.0f ? b2 : 0.f;
-            float g = b2 < 2.0f && b2 > 0.99f ? b2 - 1.f : 0.f;
-            float b = b2 < 3.0f && b2 > 1.99f ? b2 - 2.f : 0.f;
-            led2.Set(r, g, b);
-            led2.Update();
-            led2.Update();
-            led2.Update();
-            led2.Update();
-        }
+        /** Note: The software PWM is a bit slow as-is
+         *  To "trick" it into running faster we can call the
+         *  update function multiple times (as seen below).
+         */
+        uint32_t now = daisy::System::GetNow();
+        /** Update Animation */
+        /** 0-1 */
+        float b1 = (now & 1023) / 1023.f;
+        led1.Set(b1);
+        led1.Update();
+        led1.Update();
+        led1.Update();
+        led1.Update();
+
+        /** 0-4 */
+        float b2 = (now & 4095) / 1023.f;
+        float r = b2 < 1.0f ? b2 : 0.f;
+        float g = b2 < 2.0f && b2 > 0.99f ? b2 - 1.f : 0.f;
+        float b = b2 < 3.0f && b2 > 1.99f ? b2 - 2.f : 0.f;
+        led2.Set(r, g, b);
+        led2.Update();
+        led2.Update();
+        led2.Update();
+        led2.Update();
     }
 
-    /** Test sequence for animating the OLED */
+    /** Test sequence for animating the OLED
+     *  Prints some text and draws a line across the display
+     */
     void AnimateOLED()
     {
         auto now = daisy::System::GetNow();
@@ -133,7 +135,6 @@ public:
             /** Update Animation */
             toled = now;
             uint32_t line = (now >> 5) % 128;
-            // bool polarity = (now & 1023) > 511;
             display.Fill(false);
             display.SetCursor(4, 16);
             display.WriteString("Pedal DevKit Test", Font_7x10, true);
